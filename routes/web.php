@@ -16,3 +16,15 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+// API route group
+$router->group(['prefix' => 'api'], function () use ($router) {
+
+    $router->group(['prefix' => 'legals', 'middleware' => ['json.request', 'json.request.camel', 'json.response.camel']], function () use ($router) {
+        $router->get('/', 'LegalsController@index');
+        $router->post('/', 'LegalsController@create');
+        $router->get('/{id}', 'LegalsController@get');
+        $router->post('/{id}', 'LegalsController@update');
+        $router->delete('/{id}', 'LegalsController@delete');
+    });
+});
