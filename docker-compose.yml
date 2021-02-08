@@ -1,0 +1,97 @@
+version: '3'
+services:
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: .docker/app/Dockerfile
+    image: php:8-fpm-alpine
+    container_name: prso_app
+    restart: unless-stopped
+    tty: true
+    environment:
+      ENVIRONMENT: debug
+      DB_HOST: db
+      DB_NAME: prso
+      DB_USER: root
+      DB_PASS: prso_root_password
+    working_dir: /var/www
+    networks:
+      - app-network
+    volumes:
+      - .:/var/www
+      - .docker/app/data:/var/storage
+      - .docker/app/php.ini:/usr/local/etc/php/conf.d/local.ini
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: prso_webserver
+    depends_on: [app]
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - app-network
+    volumes:
+      - .:/var/www
+      - .docker/nginx:/etc/nginx/conf.d
+
+  #MySQL Service
+  db:
+    image: mysql:latest
+    container_name: prso_db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: prso
+      MYSQL_ROOT_PASSWORD: prso_root_password
+    networks:
+      - app-network
+    volumes:
+      - .docker/mysql/data:/var/lib/mysql
+      - .docker/mysql/conf.d:/etc/mysql/conf.d
+
+  redis:
+    image: redis:alpine
+    container_name: prso_redis
+    restart: always
+    tty: true
+    ports:
+      - 6379:6379
+    networks:
+      - app-network
+
+  composer:
+    image: composer:latest
+    container_name: prso_composer
+    command: install
+    volumes:
+      - .:/app
+    networks:
+      - app-network
+
+  # Sign Service
+  # Here's your signature lambda service
+  # You can use the https://www.npmjs.com/package/gost89 library
+  sign:
+    build:
+      context: ../prso-signer
+    container_name: prso_sign
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+    volumes:
+      - ../prso-signer:/usr/src/app
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
