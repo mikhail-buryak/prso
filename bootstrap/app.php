@@ -77,9 +77,12 @@ $app->configure('scribe');
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    //'auth' => App\Http\Middleware\Authenticate::class,
+    'json.request' => App\Http\Middleware\JsonRequestMiddleware::class,
+    'json.request.camel' => App\Http\Middleware\JsonRequestCamelMiddleware::class,
+    'json.response.camel' => App\Http\Middleware\JsonResponseCamelMiddleware::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -93,7 +96,7 @@ $app->configure('scribe');
 */
 
 $app->register(App\Providers\AppServiceProvider::class);
-$app->register(App\Providers\AuthServiceProvider::class);
+// $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(\Knuckles\Scribe\ScribeServiceProvider::class);
 $app->register(Clockwork\Support\Lumen\ClockworkServiceProvider::class);
