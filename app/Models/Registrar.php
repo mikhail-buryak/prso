@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Registrar extends Model
 {
@@ -43,6 +44,18 @@ class Registrar extends Model
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function legal(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Legal::class,
+            Unit::class,
+            'id',
+            'id',
+            'unit_id',
+            'legal_id'
+        );
     }
 
     public function isClosed()

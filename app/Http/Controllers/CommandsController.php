@@ -121,4 +121,111 @@ class CommandsController extends Controller
             'touched_registrars' => $countRegistrars,
         ]);
     }
+
+    /**
+     * Get registrar state
+     * Return the current state of the registrar
+     *
+     * @urlParam id integer required The ID of the registrar. Example: 1
+     *
+     * @param Command $command
+     * @param $id
+     * @return Response
+     */
+    public function getTransactionsRegistrarState(Command $command, $id): Response
+    {
+        /** @var Registrar $registrar */
+        $registrar = Registrar::with('legal')->findOrFail($id);
+
+        return response($command->setLegal($registrar->legal)->transactionsRegistrarState($registrar));
+    }
+
+    /**
+     * Post registrar state
+     * Sync the current state of the registrar
+     *
+     * @urlParam id integer required The ID of the registrar. Example: 1
+     *
+     * @param Command $command
+     * @param $id
+     * @return Response
+     */
+    public function postTransactionsRegistrarState(Command $command, $id): Response
+    {
+        /** @var Registrar $registrar */
+        $registrar = Registrar::with('legal')->findOrFail($id);
+
+        $registrarState = $command->setLegal($registrar->legal)
+            ->transactionsRegistrarState($registrar);
+
+        $registrar->fill([
+            'closed' => $registrarState['Closed'],
+            'last_number_local' => --$registrarState['NextLocalNum'],
+            'last_number_fiscal' => $registrarState['LastFiscalNum'],
+        ])->save();
+
+        return response(['message' => Response::$statusTexts[Response::HTTP_OK]]);
+    }
+
+    /**
+     * Get shifts
+     * Returns shift history objects for the specified registrar
+     *
+     * @urlParam id integer required The ID of the registrar. Example: 1
+     * @queryParam from string Start datetime(ISO-8601) of period. Example: 2020-12-24 20:20:20.000000
+     * @queryParam to string End datetime of period. Example: 2020-12-25 20:20:20.000000
+     *
+     * @param Command $command
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function getShifts(Command $command, Request $request, $id): Response
+    {
+        $from = $request->query('from');
+        $to = $request->query('to');
+
+        /** @var Registrar $registrar */
+        $registrar = Registrar::with('legal')->findOrFail($id);
+
+        return response($command->setLegal($registrar->legal)->shifts($registrar, $from, $to));
+    }
+
+    /**
+     * Get documents
+     * Return the list of documents for the specified registrar shift
+     *
+     * @urlParam id integer required The ID of the registrar. Example: 1
+     * @urlParam shift integer required The ID of the shift. Example: 68842
+     *
+     * @param Command $command
+     * @param $id
+     * @param $shift
+     * @return Response
+     */
+    public function getDocuments(Command $command, $id, $shift): Response
+    {
+        /** @var Registrar $registrar */
+        $registrar = Registrar::with('legal')->findOrFail($id);
+
+        return response($command->setLegal($registrar->legal)->documents($registrar, $shift));
+    }
+
+    /**
+     * Get last shift totals
+     * Return the data of last shift for the specified registrar
+     *
+     * @urlParam id integer required The ID of the registrar. Example: 1
+     *
+     * @param Command $command
+     * @param $id
+     * @return Response
+     */
+    public function getLastShiftTotals(Command $command, $id): Response
+    {
+        /** @var Registrar $registrar */
+        $registrar = Registrar::with('legal')->findOrFail($id);
+
+        return response($command->setLegal($registrar->legal)->lastShiftTotals($registrar));
+    }
 }

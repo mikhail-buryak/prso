@@ -31,5 +31,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'commands', 'middleware' => ['json.request', 'json.request.camel', 'json.response.camel']], function () use ($router) {
         $router->get('/legal/{id}/objects[/max/{max}]', 'CommandsController@getObjects');
         $router->post('/legal/{id}/objects[/max/{max}]', 'CommandsController@postObjects');
+        $router->get('/registrar/{id}/state', 'CommandsController@getTransactionsRegistrarState');
+        $router->post('/registrar/{id}/state', 'CommandsController@postTransactionsRegistrarState');
+        $router->get('/registrar/{id}/shifts[?from={from}[&to={to}]]', 'CommandsController@getShifts');
+        $router->get('/registrar/{id}/shifts/{shift}/documents', 'CommandsController@getDocuments');
+        $router->get('/registrar/{id}/shifts/last/totals', 'CommandsController@getLastShiftTotals');
     });
 });

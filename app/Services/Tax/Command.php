@@ -3,7 +3,9 @@
 namespace App\Services\Tax;
 
 use App\Models\Legal;
+use App\Models\Registrar;
 use App\Services\Sign\Sign;
+use Carbon\Carbon;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\TransferException;
 use Exception;
@@ -57,5 +59,51 @@ class Command extends Tax
     public function objects()
     {
         return $this->send(['Command' => 'Objects']);
+    }
+
+    public function transactionsRegistrarState(Registrar $registrar)
+    {
+        return $this->send([
+            'Command' => 'TransactionsRegistrarState',
+            'NumFiscal' => $registrar->number_fiscal,
+        ]);
+    }
+
+    public function shifts(Registrar $registrar, $from = null, $to = null)
+    {
+        $to = Carbon::parse($to);
+
+        if (!$from) {
+            $from = Carbon::parse($to)->startOfMonth();
+        } else {
+            $from = Carbon::parse($from);
+        }
+
+        return $this->send([
+            'Command' => 'Shifts',
+            'NumFiscal' => $registrar->number_fiscal,
+            'From' => $from->toIso8601String(),
+            'To' => $to->toIso8601String(),
+        ]);
+    }
+
+    public function documents(Registrar $registrar, $shiftAttribute)
+    {
+        $command = [
+            'Command' => 'Documents',
+            'NumFiscal' => $registrar->number_fiscal
+        ];
+
+        $command['ShiftId'] = $shiftAttribute;
+
+        return $this->send($command);
+    }
+
+    public function lastShiftTotals(Registrar $registrar)
+    {
+        return $this->send([
+            'Command' => 'LastShiftTotals',
+            'NumFiscal' => $registrar->number_fiscal,
+        ]);
     }
 }
