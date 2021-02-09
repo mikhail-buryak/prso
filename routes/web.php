@@ -53,4 +53,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/registrar/{id}/shifts/{shift}/documents', 'CommandsController@getDocuments');
         $router->get('/registrar/{id}/shifts/last/totals', 'CommandsController@getLastShiftTotals');
     });
+
+    $router->group(['prefix' => 'receipt', 'middleware' => ['json.request', 'json.request.camel', 'json.response.camel']], function () use ($router) {
+        $router->post('/validate', 'ReceiptsController@postValidate');
+        $router->post('/refund', 'ReceiptsController@postRefund');
+        $router->post('/cancel', 'ReceiptsController@postCancel');
+    });
 });
