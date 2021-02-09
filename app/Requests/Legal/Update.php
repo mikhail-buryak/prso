@@ -4,7 +4,7 @@ namespace App\Requests\Legal;
 
 class Update
 {
-    public static function getValidationRules()
+    public static function getValidationRules(): array
     {
         return [
             'tin' => 'string|max:10|unique:legals',

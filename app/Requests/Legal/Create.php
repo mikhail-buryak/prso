@@ -4,7 +4,7 @@ namespace App\Requests\Legal;
 
 class Create
 {
-    public static function getValidationRules()
+    public static function getValidationRules(): array
     {
         return [
             'tin' => 'required|string|max:10|unique:legals',

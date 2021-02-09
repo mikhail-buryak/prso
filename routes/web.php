@@ -28,6 +28,22 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->delete('/{id}', 'LegalsController@delete');
     });
 
+    $router->group(['prefix' => 'units', 'middleware' => ['json.request', 'json.request.camel', 'json.response.camel']], function () use ($router) {
+        $router->get('/', 'UnitsController@index');
+        $router->post('/', 'UnitsController@create');
+        $router->get('/{id}', 'UnitsController@get');
+        $router->put('/{id}', 'UnitsController@update');
+        $router->delete('/{id}', 'UnitsController@delete');
+    });
+
+    $router->group(['prefix' => 'registrars', 'middleware' => ['json.request', 'json.request.camel', 'json.response.camel']], function () use ($router) {
+        $router->get('/', 'RegistrarsController@index');
+        $router->post('/', 'RegistrarsController@create');
+        $router->get('/{id}', 'RegistrarsController@get');
+        $router->put('/{id}', 'RegistrarsController@update');
+        $router->delete('/{id}', 'RegistrarsController@delete');
+    });
+
     $router->group(['prefix' => 'commands', 'middleware' => ['json.request', 'json.request.camel', 'json.response.camel']], function () use ($router) {
         $router->get('/legal/{id}/objects[/max/{max}]', 'CommandsController@getObjects');
         $router->post('/legal/{id}/objects[/max/{max}]', 'CommandsController@postObjects');
