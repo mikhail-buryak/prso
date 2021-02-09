@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class Legal extends Model
 {
+    use EncryptableDbAttribute;
+
     /**
      * The table associated with the model.
      *
@@ -36,7 +39,18 @@ class Legal extends Model
         'cert'
     ];
 
-    public function store(Request $request)
+    /**
+     * The attributes that should be encrypted/decrypted
+     *
+     * @var array
+     */
+    protected $encryptable = [
+        'passphrase',
+        'key',
+        'cert',
+    ];
+
+    public function store(Request $request): static
     {
         $this->fill($request->all());
 
