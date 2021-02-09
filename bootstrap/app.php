@@ -61,6 +61,7 @@ $app->singleton(
 
 $app->configure('app');
 $app->configure('sign');
+$app->configure('tax');
 $app->configure('scribe');
 
 /*
@@ -102,6 +103,7 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(\Knuckles\Scribe\ScribeServiceProvider::class);
 $app->register(Clockwork\Support\Lumen\ClockworkServiceProvider::class);
 $app->register(\App\Providers\SignServiceProvider::class);
+$app->register(\App\Providers\CommandServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
