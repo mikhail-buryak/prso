@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Services\Sign\Sign;
 use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -52,6 +54,16 @@ class Legal extends Model
         'key',
         'cert',
     ];
+
+    public function units(): HasMany
+    {
+        return $this->hasMany(Unit::class);
+    }
+
+    public function registrars(): HasManyThrough
+    {
+        return $this->hasManyThrough(Registrar::class, Unit::class);
+    }
 
     public function store(Request $request): static
     {
