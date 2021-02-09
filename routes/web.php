@@ -27,4 +27,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/{id}', 'LegalsController@update');
         $router->delete('/{id}', 'LegalsController@delete');
     });
+
+    $router->group(['prefix' => 'commands', 'middleware' => ['json.request', 'json.request.camel', 'json.response.camel']], function () use ($router) {
+        $router->get('/legal/{id}/objects[/max/{max}]', 'CommandsController@getObjects');
+    });
 });
