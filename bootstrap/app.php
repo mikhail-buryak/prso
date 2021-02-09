@@ -104,6 +104,7 @@ $app->register(\Knuckles\Scribe\ScribeServiceProvider::class);
 $app->register(Clockwork\Support\Lumen\ClockworkServiceProvider::class);
 $app->register(\App\Providers\SignServiceProvider::class);
 $app->register(\App\Providers\CommandServiceProvider::class);
+$app->register(\App\Providers\DocumentServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
