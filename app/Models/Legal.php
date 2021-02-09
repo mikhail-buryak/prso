@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Services\Sign\Sign;
 use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Legal extends Model
 {
@@ -56,6 +59,16 @@ class Legal extends Model
 
         if ($request->hasFile('key')) {
             $this->key = $request->file('key')->getContent();
+
+            if (!$request->hasFile('cert')) {
+                $this->cert = app(Sign::class)->cert($this);
+                if (!$this->cert) {
+                    throw new HttpException(
+                        Response::HTTP_UNPROCESSABLE_ENTITY,
+                        'Error while the certificate creating. Check the key file and password.'
+                    );
+                }
+            }
         }
 
         if ($request->hasFile('cert')) {

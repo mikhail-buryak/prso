@@ -63,4 +63,27 @@ class Sign
 
         return $response->getBody()->getContents();
     }
+
+    public function cert(Legal $legal): bool|string
+    {
+        try {
+            $response = $this->client->post('/cert', [
+                'multipart' => [
+                    [
+                        'name' => 'key',
+                        'contents' => $legal->key,
+                        'filename' => 'key'
+                    ],
+                    [
+                        'name' => 'password',
+                        'contents' => $legal->passphrase
+                    ],
+                ]
+            ]);
+        } catch (Exception) {
+            return false;
+        }
+
+        return $response->getBody()->getContents();
+    }
 }
