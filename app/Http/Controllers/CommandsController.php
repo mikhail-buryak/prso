@@ -160,7 +160,7 @@ class CommandsController extends Controller
 
         $registrar->fill([
             'closed' => $registrarState['Closed'],
-            'last_number_local' => --$registrarState['NextLocalNum'],
+            'next_number_local' => $registrarState['NextLocalNum'],
             'last_number_fiscal' => $registrarState['LastFiscalNum'],
         ])->save();
 

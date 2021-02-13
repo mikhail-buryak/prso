@@ -23,9 +23,8 @@ class Registrar extends Model
 
     protected $fillable = [
         'number_local',
-        'last_number_local',
+        'next_number_local',
         'number_fiscal',
-        'last_number_local',
         'name',
         'on',
         'closed',
