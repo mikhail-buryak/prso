@@ -7,6 +7,4 @@ use App\Models\Transaction\Receipt;
 class Validate extends Receipt
 {
     public int $sub_type = self::SUB_TYPE_VALIDATE;
-
-    protected static $singleTableType = self::SUB_TYPE_VALIDATE;
 }

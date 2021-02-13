@@ -2,34 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\Transaction\ShiftOpen;
-use App\Models\Transaction\Receipt as TReceipt;
-use App\Models\Transaction\ZReport;
-use App\Models\Transaction\ShiftClose;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
-use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 
 abstract class Transaction extends Model
 {
-    use SingleTableInheritanceTrait;
-
     const TYPE_SHIFT_OPEN = 100;
     const TYPE_RECEIPT = 0;
     const TYPE_Z_REPORT = 1;
     const TYPE_SHIFT_CLOSE = 101;
 
     public int $type;
-
-    protected static $singleTableTypeField = 'type';
-
-    protected static $singleTableSubclasses = [
-        ShiftOpen::class,
-        TReceipt::class,
-        ZReport::class,
-        ShiftClose::class,
-    ];
+    public int $sub_type = 0;
 
     /**
      * The table associated with the model.
@@ -76,6 +61,9 @@ abstract class Transaction extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
+
+        $this->setAttribute('type', $this->type);
+        $this->setAttribute('sub_type', $this->sub_type);
 
         if (!$this->uuid) {
             $this->uuid = Str::uuid();

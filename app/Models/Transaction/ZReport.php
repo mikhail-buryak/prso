@@ -3,17 +3,22 @@
 namespace App\Models\Transaction;
 
 use App\Models\Transaction;
+use App\Services\Tax\Command;
 
 class ZReport extends Transaction
 {
-    protected static $singleTableType = self::TYPE_Z_REPORT;
+    public int $type = self::TYPE_Z_REPORT;
 
-    public function makeRequest(): static
+    public function makeRequest(): string
     {
-        // TODO: Implement makeRequest() method.
+        /** @var Command $command */
+        $command = app(Command::class);
 
-        $this->request = 'xml-view';
+        $this->request = view('tax.contents.z-report', [
+            'transaction' => $this,
+            'totals' => $command->setLegal($this->legal)->lastShiftTotals($this->registrar)
+        ])->render();
 
-        return $this;
+        return $this->request;
     }
 }
