@@ -30,7 +30,6 @@ class LegalsController extends Controller
      * Creates an entity
      *
      * @bodyParam tin string required The tin number. Example: 34554363
-     * @bodyParam totalMax number Maximal sum of receipts amounts. Example: 100000.00
      * @bodyParam passphrase string The secret word for key file. Example: tect4
      * @bodyParam key file required The .key file.
      * @bodyParam cert file required The .cer file.
@@ -38,8 +37,6 @@ class LegalsController extends Controller
      * @response status=201 {
      * "id": 1,
      * "tin": "345333342",
-     * "total": 0,
-     * "totalMax": 100000,
      * "createdAt": "2021-02-08T21:59:43.000000Z",
      * "updatedAt": "2021-02-08T21:59:43.000000Z"
      * }
@@ -67,8 +64,6 @@ class LegalsController extends Controller
      * @response status=200 {
      * "id": 1,
      * "tin": "345333342",
-     * "total": 0,
-     * "totalMax": 100000,
      * "createdAt": "2021-02-08T21:59:43.000000Z",
      * "updatedAt": "2021-02-08T21:59:43.000000Z"
      * }
@@ -87,7 +82,6 @@ class LegalsController extends Controller
      *
      * @urlParam id integer required The ID of the entity. Example: 1
      * @bodyParam tin string Unique The tin number. Example: 34554363
-     * @bodyParam totalMax number Maximal sum of receipts amounts. Example: 100000.00
      * @bodyParam passphrase string The secret word for key file. Example: tect4
      * @bodyParam key file required The .key file.
      * @bodyParam cert file required The .cer file.

@@ -19,9 +19,6 @@ class CreateLegalsTable extends Migration
             $table->id();
             $table->string('tin', 10);
 
-            $table->double('total', 15, 2)->default(0);
-            $table->double('total_max', 15, 2)->default(0);
-
             $table->text('passphrase')->nullable();
             $table->binary('key')->nullable();
             $table->binary('cert')->nullable();

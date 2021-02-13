@@ -29,7 +29,6 @@ class Legal extends Model
      */
     protected $fillable = [
         'tin',
-        'total_max',
         'passphrase',
     ];
 
