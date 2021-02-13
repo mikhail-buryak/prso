@@ -2,12 +2,13 @@
 
 namespace App\Services\Tax;
 
-use App\Models\Legal;
 use App\Models\Receipt;
 use App\Models\Registrar;
 use App\Models\Transaction;
 use App\Models\Transaction\ShiftOpen;
 use App\Models\Transaction\Sub\Validate;
+use App\Models\Transaction\ZReport;
+use App\Models\Transaction\ShiftClose;
 use App\Services\Sign\Sign;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\ClientException;
@@ -48,10 +49,9 @@ class Document extends Tax
                 throw new TransferException($response->getBody()->getContents());
             }
 
-            $response = $this->sign->decrypt($response->getBody()->getContents());
-            $transaction->response = $response;
+            $transaction->response = $this->sign->decrypt($response->getBody()->getContents());
 
-            $response = new SimpleXMLElement($response);
+            $response = new SimpleXMLElement($transaction->response);
             $transaction->number_fiscal = (string)$response->ORDERTAXNUM;
             $transaction->fiscal_at = Carbon::createFromFormat(
                 'dmY His',
@@ -80,14 +80,11 @@ class Document extends Tax
         return true;
     }
 
-    public function shiftOpen(Registrar $registrar): Transaction
+    public function shiftOpen(Registrar $registrar): ShiftOpen
     {
-        /** @var Legal $legal */
-        $legal = $registrar->legal;
         $transaction = new ShiftOpen();
-
         $transaction->registrar()->associate($registrar);
-        $transaction->legal()->associate($legal);
+        $transaction->legal()->associate($registrar->legal);
 
         if ($this->send($transaction)) {
             $registrar->closed = false;
@@ -98,14 +95,11 @@ class Document extends Tax
         return $transaction;
     }
 
-    public function validate(Receipt $receipt, Registrar $registrar): Transaction
+    public function validate(Receipt $receipt, Registrar $registrar): Validate
     {
-        /** @var Legal $legal */
-        $legal = $receipt->legal;
-
         $transaction = new Validate();
         $transaction->registrar()->associate($registrar);
-        $transaction->legal()->associate($legal);
+        $transaction->legal()->associate($receipt->legal);
 
         $receipt->save();
         $transaction->receipt()->associate($receipt);
@@ -123,11 +117,29 @@ class Document extends Tax
     {
     }
 
-    public function zReport()
+    public function zReport(Registrar $registrar): ZReport
     {
+        $transaction = new ZReport();
+        $transaction->registrar()->associate($registrar);
+        $transaction->legal()->associate($registrar->legal);
+
+        $this->send($transaction);
+
+        return $transaction;
     }
 
-    public function shiftClose()
+    public function shiftClose(Registrar $registrar): ShiftClose
     {
+        $transaction = new ShiftClose();
+        $transaction->registrar()->associate($registrar);
+        $transaction->legal()->associate($registrar->legal);
+
+        if ($this->send($transaction)) {
+            $registrar->closed = true;
+            $registrar->closed_at = Carbon::now();
+            $registrar->save();
+        }
+
+        return $transaction;
     }
 }
