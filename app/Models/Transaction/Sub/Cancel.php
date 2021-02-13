@@ -6,14 +6,14 @@ use App\Models\Transaction\Receipt;
 
 class Cancel extends Receipt
 {
+    public int $sub_type = self::SUB_TYPE_CANCEL;
+
     protected static $singleTableType = self::SUB_TYPE_CANCEL;
 
-    public function makeRequest(): static
+    public function makeRequest(): string
     {
-        // TODO: Implement makeRequest() method.
+        $this->request = view('tax.contents.cancel', ['transaction' => $this])->render();
 
-        $this->request = 'xml-view';
-
-        return $this;
+        return $this->request;
     }
 }

@@ -6,14 +6,14 @@ use App\Models\Transaction;
 
 class ShiftClose extends Transaction
 {
+    public int $type = self::TYPE_SHIFT_CLOSE;
+
     protected static $singleTableType = self::TYPE_SHIFT_CLOSE;
 
-    public function makeRequest(): static
+    public function makeRequest(): string
     {
-        // TODO: Implement makeRequest() method.
+        $this->request = view('tax.contents.shift', ['transaction' => $this])->render();
 
-        $this->request = 'xml-view';
-
-        return $this;
+        return $this->request;
     }
 }

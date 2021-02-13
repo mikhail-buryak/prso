@@ -20,6 +20,8 @@ abstract class Transaction extends Model
     const TYPE_Z_REPORT = 1;
     const TYPE_SHIFT_CLOSE = 101;
 
+    public int $type;
+
     protected static $singleTableTypeField = 'type';
 
     protected static $singleTableSubclasses = [
@@ -95,5 +97,5 @@ abstract class Transaction extends Model
         return $this->belongsTo(Receipt::class);
     }
 
-    public abstract function makeRequest();
+    public abstract function makeRequest(): string;
 }

@@ -6,14 +6,7 @@ use App\Models\Transaction\Receipt;
 
 class Validate extends Receipt
 {
+    public int $sub_type = self::SUB_TYPE_VALIDATE;
+
     protected static $singleTableType = self::SUB_TYPE_VALIDATE;
-
-    public function makeRequest(): static
-    {
-        // TODO: Implement makeRequest() method.
-
-        $this->request = 'xml-view';
-
-        return $this;
-    }
 }
