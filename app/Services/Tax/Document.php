@@ -65,7 +65,7 @@ class Document extends Tax
             $transaction->status = $response->getStatusCode();
             $transaction->response = $response->getBody()->getContents();
 
-            throw new TransferException($response->getBody());
+            return $this->handleClientException($exception, $transaction);
         } catch (ConnectException $exception) {
             // Here offline mode begins
             $transaction->status = Response::HTTP_SERVICE_UNAVAILABLE;
@@ -77,6 +77,29 @@ class Document extends Tax
         }
 
         return true;
+    }
+
+    private function handleClientException(ClientException $exception, Transaction $transaction): bool
+    {
+        /** @var \GuzzleHttp\Psr7\Response $response */
+        $response = $exception->getResponse();
+
+        // ShiftNotOpened
+        if (strripos($response->getBody(), self::CLIENT_ERROR_SHIFT_NOT_OPENED)) {
+            /** @var Registrar $registrar */
+            $registrar = $transaction->registrar;
+
+            if ($transaction->type == Transaction::TYPE_Z_REPORT || $transaction->type == Transaction::TYPE_SHIFT_CLOSE) {
+                $registrar->closed = true;
+                $registrar->save();
+                return false;
+            }
+
+            $this->shiftOpen($registrar);
+            return $this->send($transaction);
+        }
+
+        throw new TransferException($response->getBody());
     }
 
     public function shiftOpen(Registrar $registrar): ShiftOpen
