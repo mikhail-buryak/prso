@@ -7,6 +7,8 @@ use App\Models\Registrar;
 use App\Models\Transaction;
 use App\Models\Transaction\ShiftOpen;
 use App\Models\Transaction\Sub\Validate;
+use App\Models\Transaction\Sub\Refund;
+use App\Models\Transaction\Sub\Cancel;
 use App\Models\Transaction\ZReport;
 use App\Models\Transaction\ShiftClose;
 use App\Services\Sign\Sign;
@@ -109,12 +111,37 @@ class Document extends Tax
         return $transaction;
     }
 
-    public function refund()
+    public function refund(Receipt $receipt, Registrar $registrar, int $refundNumberFiscal): Refund
     {
+        $transaction = new Refund();
+        $transaction->registrar()->associate($registrar);
+        $transaction->legal()->associate($receipt->legal);
+        $transaction->refundNumberFiscal = $refundNumberFiscal;
+
+        $receipt->save();
+        $transaction->receipt()->associate($receipt);
+
+        $this->send($transaction);
+
+        return $transaction;
     }
 
-    public function cancel()
+    public function cancel(int $cancelNumberFiscal): Cancel
     {
+        /** @var Transaction $transactionOriginal */
+        $transactionOriginal = Transaction::with(['legal', 'registrar'])
+            ->where('number_fiscal', $cancelNumberFiscal)
+            ->firstOrFail();
+
+        $transaction = new Cancel();
+        $transaction->cancelNumberFiscal = $cancelNumberFiscal;
+        $transaction->receipt()->associate($transactionOriginal->receipt);
+        $transaction->registrar()->associate($transactionOriginal->registrar);
+        $transaction->legal()->associate($transactionOriginal->legal);
+
+        $this->send($transaction);
+
+        return $transaction;
     }
 
     public function zReport(Registrar $registrar): ZReport

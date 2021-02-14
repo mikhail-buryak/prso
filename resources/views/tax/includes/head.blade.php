@@ -15,12 +15,11 @@
     <ORDERNUM>{{$transaction->registrar->refresh()->next_number_local}}</ORDERNUM>
     <CASHDESKNUM>{{$transaction->registrar->number_local}}</CASHDESKNUM>
     <CASHREGISTERNUM>{{$transaction->registrar->number_fiscal}}</CASHREGISTERNUM>
-    @if ($transaction->relativeNumberFiscal))
-    @if(is_a($transaction, App\Models\Transaction\Sub\Refund::class))
-        <ORDERRETNUM>{{$transaction->numberFiscalRelative}}</ORDERRETNUM>
-    @elseif(is_a($transaction, App\Models\Transaction\Sub\Cancel::class))
-        <ORDERSTORNUM>{{$transaction->numberFiscalRelative}}</ORDERSTORNUM>
+    @if ($transaction->refundNumberFiscal)
+        <ORDERRETNUM>{{$transaction->refundNumberFiscal}}</ORDERRETNUM>
     @endif
+    @if($transaction->cancelNumberFiscal)
+        <ORDERSTORNUM>{{$transaction->cancelNumberFiscal}}</ORDERSTORNUM>
     @endif
     <CASHIER>{{$transaction->registrar->name}}</CASHIER>
     <VER>1</VER>

@@ -4,15 +4,13 @@ namespace App\Models\Transaction;
 
 use App\Models\Transaction;
 
-abstract class Receipt extends Transaction
+class Receipt extends Transaction implements RequestView
 {
     const SUB_TYPE_VALIDATE = 0;
     const SUB_TYPE_REFUND = 1;
     const SUB_TYPE_CANCEL = 5;
 
     public int $type = self::TYPE_RECEIPT;
-
-    public int|null $relativeNumberFiscal = null;
 
     public function makeRequest(): string
     {

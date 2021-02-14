@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Legal;
 use App\Models\Receipt;
 use App\Models\Registrar;
+use App\Requests\Receipt\Cancel;
+use App\Requests\Receipt\Refund;
 use App\Requests\Receipt\Validate;
 use App\Services\Tax\Document;
 use Illuminate\Http\Request;
@@ -45,7 +47,7 @@ class ReceiptsController extends Controller
 
         return response($transaction->makeHidden([
             'receipt',
-            'juridicalPerson',
+            'legal',
             'registrar'
         ]));
     }
@@ -63,9 +65,26 @@ class ReceiptsController extends Controller
      */
     public function postRefund(Document $document, Request $request): Response
     {
-        $this->validate($request, Validate::getValidationRules());
+        $this->validate($request, Refund::getValidationRules());
 
-        return response([]);
+        $meta = $request->get('meta');
+
+        $receipt = new Receipt(Refund::map($request));
+        $legal = Legal::where('tin', $meta['person_tin'])
+            ->firstOrFail();
+
+        $registrar = Registrar::where('number_fiscal', $meta['registrar_fiscal'])
+            ->firstOrFail();
+
+        $receipt->legal()->associate($legal);
+
+        $transaction = $document->refund($receipt, $registrar, (int)$meta['refund_fiscal']);
+
+        return response($transaction->makeHidden([
+            'receipt',
+            'legal',
+            'registrar'
+        ]));
     }
 
     /**
@@ -77,9 +96,20 @@ class ReceiptsController extends Controller
      * @param Document $document
      * @param Request $request
      * @return Response
+     * @throws ValidationException
      */
     public function postCancel(Document $document, Request $request): Response
     {
-        return response([]);
+        $this->validate($request, Cancel::getValidationRules());
+
+        $meta = $request->get('meta');
+
+        $transaction = $document->cancel((int)$meta['cancel_fiscal']);
+
+        return response($transaction->makeHidden([
+            'receipt',
+            'legal',
+            'registrar'
+        ]));
     }
 }

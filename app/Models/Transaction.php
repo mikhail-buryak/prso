@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
-abstract class Transaction extends Model
+class Transaction extends Model
 {
     const TYPE_SHIFT_OPEN = 100;
     const TYPE_RECEIPT = 0;
     const TYPE_Z_REPORT = 1;
     const TYPE_SHIFT_CLOSE = 101;
 
-    public int $type;
+    public int $type = 0;
     public int $sub_type = 0;
 
     /**
@@ -84,6 +84,4 @@ abstract class Transaction extends Model
     {
         return $this->belongsTo(Receipt::class);
     }
-
-    public abstract function makeRequest(): string;
 }

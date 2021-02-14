@@ -7,4 +7,6 @@ use App\Models\Transaction\Receipt;
 class Refund extends Receipt
 {
     public int $sub_type = self::SUB_TYPE_REFUND;
+
+    public int|null $refundNumberFiscal;
 }

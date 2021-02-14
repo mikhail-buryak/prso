@@ -5,7 +5,7 @@ namespace App\Models\Transaction;
 use App\Models\Transaction;
 use App\Services\Tax\Command;
 
-class ZReport extends Transaction
+class ZReport extends Transaction implements RequestView
 {
     public int $type = self::TYPE_Z_REPORT;
 
