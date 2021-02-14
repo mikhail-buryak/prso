@@ -86,20 +86,36 @@ class Document extends Tax
 
         // ShiftNotOpened
         if (strripos($response->getBody(), self::CLIENT_ERROR_SHIFT_NOT_OPENED)) {
-            /** @var Registrar $registrar */
-            $registrar = $transaction->registrar;
-
             if ($transaction->type == Transaction::TYPE_Z_REPORT || $transaction->type == Transaction::TYPE_SHIFT_CLOSE) {
-                $registrar->closed = true;
-                $registrar->save();
+                $transaction->registrar->closed = true;
+                $transaction->registrar->save();
                 return false;
             }
 
-            $this->shiftOpen($registrar);
+            $this->shiftOpen($transaction->registrar);
+            return $this->send($transaction);
+        }
+
+        // CheckLocalNumberInvalid
+        if (strripos($response->getBody(), self::CLIENT_ERROR_LOCAL_NUM_INVALID)) {
+            $this->syncRegistrar($transaction->registrar);
             return $this->send($transaction);
         }
 
         throw new TransferException($response->getBody());
+    }
+
+    private function syncRegistrar(Registrar $registrar): Registrar
+    {
+        /** @var Command $command */
+        $command = app(Command::class)
+            ->setLegal($registrar->legal);
+
+        $registrarState = $command->transactionsRegistrarState($registrar);
+        $registrar->next_number_local = $registrarState['NextLocalNum'];
+        $registrar->save();
+
+        return $registrar;
     }
 
     public function shiftOpen(Registrar $registrar): ShiftOpen
