@@ -56,27 +56,24 @@ class Document extends Tax
             $response = new SimpleXMLElement($transaction->response);
             $transaction->number_fiscal = (string)$response->ORDERTAXNUM;
             $transaction->fiscal_at = Carbon::createFromFormat(
-                'dmY His',
-                "{$response->ORDERDATE} {$response->ORDERTIME}",
-                $this->timezone)
-                ->setTimezone(env('APP_TIMEZONE'));
-            $transaction->save();
-
-            $transaction->registrar->increment('next_number_local');
+                'dmY His', "{$response->ORDERDATE} {$response->ORDERTIME}", $this->timezone)->setTimezone(env('APP_TIMEZONE'));
+            $transaction->number_local = $transaction->registrar->next_number_local++;
+            $transaction->registrar->save();
         } catch (ClientException $exception) {
             $response = $exception->getResponse();
 
             $transaction->status = $response->getStatusCode();
             $transaction->response = $response->getBody()->getContents();
-            $transaction->save();
 
             throw new TransferException($response->getBody());
         } catch (ConnectException $exception) {
             // Here offline mode begins
             $transaction->status = Response::HTTP_SERVICE_UNAVAILABLE;
             $transaction->response = $exception->getMessage();
-            $transaction->save();
+
             throw new ConnectException($exception->getMessage(), $exception->getRequest());
+        } finally {
+            $transaction->save();
         }
 
         return true;
