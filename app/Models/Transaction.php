@@ -45,13 +45,12 @@ class Transaction extends Model
      * @var array
      */
     protected $hidden = [
+        'registrar_id',
+        'legal_id',
+        'receipt_id',
         'request',
         'response',
         'updated_at',
-    ];
-
-    protected $casts = [
-        'sent' => 'boolean'
     ];
 
     protected $dates = [
@@ -83,5 +82,20 @@ class Transaction extends Model
     public function receipt(): BelongsTo
     {
         return $this->belongsTo(Receipt::class);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_merge($this->makeHidden([
+            'receipt',
+            'legal',
+            'registrar'
+        ])->toArray(), [
+            'order_code' => $this->receipt->order_code,
+            'registrar_fiscal' => $this->registrar->number_fiscal,
+            'unit_name' => $this->registrar->unit->name,
+            'unit_org_name' => $this->registrar->unit->org_name,
+            'unit_address' => $this->registrar->unit->address,
+        ]);
     }
 }

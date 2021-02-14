@@ -45,11 +45,7 @@ class ReceiptsController extends Controller
 
         $transaction = $document->validate($receipt, $registrar);
 
-        return response($transaction->makeHidden([
-            'receipt',
-            'legal',
-            'registrar'
-        ]));
+        return response($transaction);
     }
 
     /**
@@ -80,11 +76,7 @@ class ReceiptsController extends Controller
 
         $transaction = $document->refund($receipt, $registrar, (int)$meta['refund_fiscal']);
 
-        return response($transaction->makeHidden([
-            'receipt',
-            'legal',
-            'registrar'
-        ]));
+        return response($transaction);
     }
 
     /**
@@ -106,10 +98,6 @@ class ReceiptsController extends Controller
 
         $transaction = $document->cancel((int)$meta['cancel_fiscal']);
 
-        return response($transaction->makeHidden([
-            'receipt',
-            'legal',
-            'registrar'
-        ]));
+        return response($transaction);
     }
 }
