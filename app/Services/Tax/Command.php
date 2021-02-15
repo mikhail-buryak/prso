@@ -4,6 +4,7 @@ namespace App\Services\Tax;
 
 use App\Models\Legal;
 use App\Models\Registrar;
+use App\Models\Transaction;
 use App\Services\Sign\Sign;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\ClientException;
@@ -105,5 +106,24 @@ class Command extends Tax
             'Command' => 'LastShiftTotals',
             'NumFiscal' => $registrar->number_fiscal,
         ]);
+    }
+
+    public function documentInfoByLocalNum(Transaction $transaction)
+    {
+        return $this->send([
+            'Command' => 'DocumentInfoByLocalNum',
+            'NumFiscal' => $transaction->registrar->number_fiscal,
+            'NumLocal' => $transaction->number_local,
+        ]);
+    }
+
+    public function check(Transaction $transaction, $original = true)
+    {
+        return $this->sign->decrypt($this->send([
+            'Command' => 'Check',
+            'RegistrarNumFiscal' => $transaction->registrar->number_fiscal,
+            'NumFiscal' => $transaction->number_fiscal,
+            'Original' => $original,
+        ], Format::XML));
     }
 }

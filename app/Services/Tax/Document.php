@@ -133,11 +133,15 @@ class Document extends Tax
         return $transaction;
     }
 
-    public function validate(Receipt $receipt, Registrar $registrar): Validate
+    public function validate(Receipt $receipt, Registrar $registrar): Transaction
     {
         $transaction = new Validate();
         $transaction->registrar()->associate($registrar);
         $transaction->legal()->associate($receipt->legal);
+
+        if ($duplicate = $this->findDuplicate($transaction, $receipt)) {
+            return $duplicate;
+        }
 
         $receipt->save();
         $transaction->receipt()->associate($receipt);
@@ -147,12 +151,16 @@ class Document extends Tax
         return $transaction;
     }
 
-    public function refund(Receipt $receipt, Registrar $registrar, int $refundNumberFiscal): Refund
+    public function refund(Receipt $receipt, Registrar $registrar, int $refundNumberFiscal): Transaction
     {
         $transaction = new Refund();
         $transaction->registrar()->associate($registrar);
         $transaction->legal()->associate($receipt->legal);
         $transaction->refundNumberFiscal = $refundNumberFiscal;
+
+        if ($duplicate = $this->findDuplicate($transaction, $receipt)) {
+            return $duplicate;
+        }
 
         $receipt->save();
         $transaction->receipt()->associate($receipt);
@@ -202,6 +210,49 @@ class Document extends Tax
             $registrar->closed_at = Carbon::now();
             $registrar->save();
         }
+
+        return $transaction;
+    }
+
+    protected function findDuplicate(Transaction $transaction, Receipt $receipt): Transaction|bool
+    {
+        $duplicate = Transaction::where('legal_id', $transaction->legal->getKey())
+            ->where('type', $transaction->type)
+            ->where('sub_type', $transaction->sub_type)
+            ->whereHas('receipt', function ($query) use ($receipt) {
+                $query
+                    ->where('order_code', $receipt->order_code)
+                    ->where('sum', $receipt->sum);
+            })
+            ->first();
+
+        if (!$duplicate) {
+            return false;
+        }
+
+        if ($duplicate->status !== Response::HTTP_OK) {
+            return $this->restore($duplicate);
+        }
+
+        return $duplicate;
+    }
+
+    protected function restore(Transaction $transaction): Transaction|bool
+    {
+        /** @var Command $command */
+        $command = app(Command::class)
+            ->setJuridicalPerson($transaction->juridicalPerson);
+
+        $info = $command->documentInfoByLocalNum($transaction);
+
+        if (!$info) {
+            return false;
+        }
+
+        $transaction->number_fiscal = $info['NumFiscal'];
+        $transaction->status = Response::HTTP_OK;
+        $transaction->response = $command->check($transaction);
+        $transaction->save();
 
         return $transaction;
     }
