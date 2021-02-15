@@ -20,7 +20,7 @@ class CreateRegistrarsTable extends Migration
             $table->foreignId('unit_id');
             $table->string('number_local');
             $table->unsignedInteger('next_number_local')->default(0);
-            $table->string('number_fiscal');
+            $table->string('number_fiscal')->unique();
             $table->unsignedInteger('last_number_fiscal')->default(0);
             $table->string('name');
             $table->unsignedTinyInteger('on')->default(0);

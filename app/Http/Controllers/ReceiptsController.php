@@ -39,6 +39,7 @@ class ReceiptsController extends Controller
             ->firstOrFail();
 
         $registrar = Registrar::where('number_fiscal', $meta['registrar_fiscal'])
+            ->with(['unit'])
             ->firstOrFail();
 
         $receipt->legal()->associate($legal);
@@ -70,6 +71,7 @@ class ReceiptsController extends Controller
             ->firstOrFail();
 
         $registrar = Registrar::where('number_fiscal', $meta['registrar_fiscal'])
+            ->with(['unit'])
             ->firstOrFail();
 
         $receipt->legal()->associate($legal);

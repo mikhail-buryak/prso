@@ -17,7 +17,7 @@ class CreateLegalsTable extends Migration
     {
         Schema::create(self::TABLE_NAME, function (Blueprint $table) {
             $table->id();
-            $table->string('tin', 10);
+            $table->string('tin', 10)->unique();
 
             $table->text('passphrase')->nullable();
             $table->binary('key')->nullable();

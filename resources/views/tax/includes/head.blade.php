@@ -12,7 +12,7 @@
     <POINTADDR>{{$transaction->registrar->unit->address}}</POINTADDR>
     <ORDERDATE>{{Carbon\Carbon::now(config('tax.timezone'))->format('dmY')}}</ORDERDATE>
     <ORDERTIME>{{Carbon\Carbon::now(config('tax.timezone'))->format('His')}}</ORDERTIME>
-    <ORDERNUM>{{$transaction->registrar->refresh()->next_number_local}}</ORDERNUM>
+    <ORDERNUM>{{$transaction->registrar->next_number_local}}</ORDERNUM>
     <CASHDESKNUM>{{$transaction->registrar->number_local}}</CASHDESKNUM>
     <CASHREGISTERNUM>{{$transaction->registrar->number_fiscal}}</CASHREGISTERNUM>
     @if ($transaction->refundNumberFiscal)
