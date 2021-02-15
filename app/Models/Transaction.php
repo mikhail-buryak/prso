@@ -13,9 +13,6 @@ class Transaction extends Model
     const TYPE_Z_REPORT = 1;
     const TYPE_SHIFT_CLOSE = 101;
 
-    public int $type = 0;
-    public int $sub_type = 0;
-
     /**
      * The table associated with the model.
      *
@@ -61,8 +58,8 @@ class Transaction extends Model
     {
         parent::__construct($attributes);
 
-        $this->setAttribute('type', $this->type);
-        $this->setAttribute('sub_type', $this->sub_type);
+        $this->setAttribute('type', $this->type ?: self::TYPE_RECEIPT);
+        $this->setAttribute('sub_type', $this->sub_type ?: \App\Models\Transaction\Receipt::SUB_TYPE_VALIDATE);
 
         if (!$this->uuid) {
             $this->uuid = Str::uuid();
