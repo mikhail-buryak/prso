@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Legal;
 use App\Models\Receipt;
 use App\Models\Registrar;
+use App\Models\Transaction;
 use App\Requests\Receipt\Cancel;
 use App\Requests\Receipt\Refund;
 use App\Requests\Receipt\Validate;
@@ -101,5 +102,21 @@ class ReceiptsController extends Controller
         $transaction = $document->cancel((int)$meta['cancel_fiscal']);
 
         return response($transaction);
+    }
+
+    /**
+     * Transaction
+     * Return an object containing information about the check by fiscal number.
+     *
+     * @param $fiscal
+     * @return Response
+     */
+    public function getTransaction($fiscal): Response
+    {
+        return response(
+            Transaction::where('number_fiscal', $fiscal)
+                ->firstOrFail()
+                ->jsonSerialize()
+        );
     }
 }

@@ -58,5 +58,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/validate', 'ReceiptsController@postValidate');
         $router->post('/refund', 'ReceiptsController@postRefund');
         $router->post('/cancel', 'ReceiptsController@postCancel');
+        $router->get('/transaction/fiscal/{fiscal}', 'ReceiptsController@getTransaction');
     });
 });
