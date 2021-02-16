@@ -6,6 +6,7 @@ use App\Models\Unit;
 use App\Models\Legal;
 use App\Models\Registrar;
 use App\Services\Tax\Command;
+use App\Services\Tax\Document;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -227,5 +228,26 @@ class CommandsController extends Controller
         $registrar = Registrar::with('legal')->findOrFail($id);
 
         return response($command->setLegal($registrar->legal)->lastShiftTotals($registrar));
+    }
+
+    /**
+     * Close shift
+     * Generate and send a Z-report, close the shift for the specified registrar
+     *
+     * @urlParam id integer required The ID of the registrar. Example: 1
+     *
+     * @param Document $document
+     * @param $id
+     * @return Response
+     */
+    public function postCloseShift(Document $document, $id): Response
+    {
+        /** @var Registrar $registrar */
+        $registrar = Registrar::findOrFail($id);
+
+        $document->zReport($registrar);
+        $document->shiftClose($registrar);
+
+        return response(['message' => Response::$statusTexts[Response::HTTP_OK]]);
     }
 }

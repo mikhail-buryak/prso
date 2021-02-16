@@ -52,6 +52,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/registrar/{id}/shifts[?from={from}[&to={to}]]', 'CommandsController@getShifts');
         $router->get('/registrar/{id}/shifts/{shift}/documents', 'CommandsController@getDocuments');
         $router->get('/registrar/{id}/shifts/last/totals', 'CommandsController@getLastShiftTotals');
+        $router->post('/registrar/{id}/shifts/close', 'CommandsController@postCloseShift');
     });
 
     $router->group(['prefix' => 'receipt', 'middleware' => ['json.request', 'json.request.camel', 'json.response.camel']], function () use ($router) {
