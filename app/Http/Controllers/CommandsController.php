@@ -12,7 +12,7 @@ use Illuminate\Http\Response;
 
 /**
  * @group Commands
- * Actions for processing data from the tax api
+ * Actions for sync and processing data from the tax api
  */
 class CommandsController extends Controller
 {

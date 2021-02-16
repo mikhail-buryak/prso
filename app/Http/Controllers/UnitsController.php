@@ -10,6 +10,8 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * @group Units
+ *
+ * Business units owned by the legal entity in which the transaction is carried out (store, warehouse, etc.)
  */
 class UnitsController extends Controller
 {
@@ -30,7 +32,7 @@ class UnitsController extends Controller
      * Create
      * Creates an entity
      *
-     * @bodyParam personId integer required The ID of j-person. Example: 1
+     * @bodyParam personId integer required The ID of legal. Example: 1
      * @bodyParam taxId string required The unit id in tax aka "Господарська одиниця". Example: 12344512
      * @bodyParam tin string required The tin number. Example: 34554363
      * @bodyParam ipn string required The ipn number. Example: 123456789018
@@ -99,7 +101,7 @@ class UnitsController extends Controller
      * Update existing entity by ID
      *
      * @urlParam id integer required The ID of the entity. Example: 1
-     * @bodyParam personId integer required The ID of j-person. Example: 1
+     * @bodyParam personId integer required The ID of legal. Example: 1
      * @bodyParam taxId string required The unit id in tax aka "Господарська одиниця". Example: 12344512
      * @bodyParam tin string required The tin number. Example: 34554363
      * @bodyParam ipn string required The ipn number. Example: 123456789018

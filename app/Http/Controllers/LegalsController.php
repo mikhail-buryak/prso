@@ -9,6 +9,8 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * @group Legals
+ *
+ * Legal persons who carry out commodity transactions
  */
 class LegalsController extends Controller
 {

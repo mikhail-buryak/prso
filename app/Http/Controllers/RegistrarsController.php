@@ -9,7 +9,9 @@ use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 /**
- * @group Registrar
+ * @group Registrars
+ *
+ * Registrars are in the units and fiscalize transactions.
  */
 class RegistrarsController extends Controller
 {

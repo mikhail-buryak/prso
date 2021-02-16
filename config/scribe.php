@@ -10,7 +10,7 @@ return [
     /*
      * A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
      */
-    'description' => '',
+    'description' => 'A basic version of the server-side registrar of settlement operations',
 
 
     /*
@@ -54,7 +54,9 @@ return [
              * The route can be referenced by name or path here. Wildcards are supported.
              */
             'exclude' => [
-                // '/health', 'admin.*'
+                '/',
+                '__clockwork*',
+                'clockwork*'
             ],
 
             /*
@@ -169,7 +171,7 @@ return [
      * Add a Try It Out button to your endpoints so consumers can test endpoints right from their browser.
      * Don't forget to enable CORS headers for your endpoints.
      */
-    'interactive' => true,
+    'interactive' => false,
 
     /*
      * How is your API authenticated? This information will be used in the displayed docs, generated examples and response calls.
@@ -221,10 +223,13 @@ return [
      * Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
      */
     'intro_text' => <<<INTRO
-This documentation aims to provide all the information you need to work with our API.
+A settlement transactions registrar is a fiscal device (i.e. apparatus) registered with a tax authority or a program that,
+when a business entity conducts a settlement transaction with a buyer in cash or a payment card at the place of settlements,
+provides fiscal information that is protected from external interference and accessible to tax authorities data of each
+transaction by providing the buyer with a paper check or the ability to receive it in electronic form and sending such
+data via the http requests to a single database/fiscal server of tax authorities.
 
-<aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
-You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
+<aside>This implementation provides the possibility of fiscalization, return and cancellation of checks, automatic creation of registered entities and local CRUD.</aside>
 INTRO
     ,
 
@@ -251,7 +256,7 @@ INTRO
      * Setting `laravel.add_routes` to true (above) will also add a route for the collection.
      */
     'postman' => [
-        'enabled' => true,
+        'enabled' => false,
 
         /*
          * Manually override some generated content in the spec. Dot notation is supported.
@@ -268,7 +273,7 @@ INTRO
      * Setting `laravel.add_routes` to true (above) will also add a route for the spec.
      */
     'openapi' => [
-        'enabled' => true,
+        'enabled' => false,
 
         /*
          * Manually override some generated content in the spec. Dot notation is supported.

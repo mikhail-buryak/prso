@@ -16,6 +16,8 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * @group Receipts
+ *
+ * Fiscalization of receipts and returns
  */
 class ReceiptsController extends Controller
 {
@@ -47,7 +49,7 @@ class ReceiptsController extends Controller
 
         $transaction = $document->validate($receipt, $registrar);
 
-        return response($transaction);
+        return response($transaction->jsonSerialize());
     }
 
     /**
@@ -79,7 +81,7 @@ class ReceiptsController extends Controller
 
         $transaction = $document->refund($receipt, $registrar, (int)$meta['refund_fiscal']);
 
-        return response($transaction);
+        return response($transaction->jsonSerialize());
     }
 
     /**
@@ -101,7 +103,7 @@ class ReceiptsController extends Controller
 
         $transaction = $document->cancel((int)$meta['cancel_fiscal']);
 
-        return response($transaction);
+        return response($transaction->jsonSerialize());
     }
 
     /**
