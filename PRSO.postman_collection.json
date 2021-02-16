@@ -1,0 +1,861 @@
+{
+	"info": {
+		"_postman_id": "e524624b-9870-42ec-a3a6-8f3ae182f1ad",
+		"name": "PRSO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "legals",
+			"item": [
+				{
+					"name": "index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/legals",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"legals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"",
+									"pm.collectionVariables.set(\"legal_id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "tin",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "passphrase",
+									"value": "tect4",
+									"type": "text"
+								},
+								{
+									"key": "key",
+									"type": "file",
+									"src": "/Users/mikhailburyak/Downloads/Тест 4 блокув 3/Нестеренко Володимир Борисович бух/Key-6.dat"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/legals",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"legals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/legals/{{legal_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"legals",
+								"{{legal_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "passphrase",
+									"value": "tect4",
+									"type": "text"
+								},
+								{
+									"key": "key",
+									"type": "file",
+									"src": "/Users/mikhailburyak/Downloads/Тест 4 блокув 3/Печатка Тестовий платник 4/Key-6.dat"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/legals/{{legal_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"legals",
+								"{{legal_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/legals/{{legal_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"legals",
+								"{{legal_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "units",
+			"item": [
+				{
+					"name": "index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/units",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"units"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"",
+									"pm.collectionVariables.set(\"unit_id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"legalId\": 1,\n    \"taxId\": \"32815\",\n    \"tin\": \"34554362\",\n    \"ipn\": \"123456789019\",\n    \"name\": \"Медичний кабінет \\\"ЛИНДА\\\"\",\n    \"orgName\": \"Тестовий платник 3\",\n    \"address\": \"УКРАЇНА, ВОЛИНСЬКА ОБЛ., М. ЛУЦЬК, вул. Рівненська, 48\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/units",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"units"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/units/{{unit_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"units",
+								"{{unit_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"personId\": {{person_id}},\n    \"taxId\": \"32815\",\n    \"tin\": \"34554362\",\n    \"ipn\": \"123456789019\",\n    \"name\": \"Медичний кабінет \\\"ЛИНДА\\\"\",\n    \"orgName\": \"Тестовий платник 3\",\n    \"address\": \"УКРАЇНА, ВОЛИНСЬКА ОБЛ., М. ЛУЦЬК, вул. Рівненська, 48\",\n    \"default\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/units/{{unit_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"units",
+								"{{unit_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/units/{{unit_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"units",
+								"{{unit_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "registrars",
+			"item": [
+				{
+					"name": "index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/registrars",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"registrars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"",
+									"pm.collectionVariables.set(\"registrar_id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"unitId\": 1,\n    \"numberLocal\": \"99\",\n    \"numberFiscal\": \"4000063090\",\n    \"name\": \"Каса №99\",\n    \"closed\": true,\n    \"default\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/registrars",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"registrars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/registrars/{{registrar_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"registrars",
+								"{{registrar_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"businessUnitId\": {{unit_id}},\n    \"numberLocal\": \"99\",\n    \"numberFiscal\": \"4000063090\",\n    \"name\": \"Каса №99\",\n    \"closed\": true,\n    \"default\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/registrars/{{registrar_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"registrars",
+								"{{registrar_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/registrars/{{registrar_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"registrars",
+								"{{registrar_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "receipts",
+			"item": [
+				{
+					"name": "validate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"",
+									"pm.collectionVariables.set(\"order_code\", response.orderCode);",
+									"pm.collectionVariables.set(\"number_fiscal\", response.numberFiscal);",
+									"pm.collectionVariables.set(\"number_local\", response.numberLocal);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"meta\": {\n        \"personTin\": \"627133\",\n        \"registrarFiscal\": \"4000054593\",\n        \"orderCode\": \"{{$randomUUID}}\"\n    },\n    \"total\": {\n        \"sum\": \"417.66\"\n    },\n    \"pay\": [\n        {\n            \"payformcd\": \"0\",\n            \"payformnm\": \"ГОТІВКА\",\n            \"sum\": \"317.66\",\n            \"provided\": \"400.00\",\n            \"remains\": \"82.34\"\n        },\n        {\n            \"payformcd\": \"1\",\n            \"payformnm\": \"КАРТКА\",\n            \"sum\": \"100.00\"\n        }\n    ],\n    \"tax\": [\n        {\n            \"type\": \"0\",\n            \"name\": \"ПДВ\",\n            \"letter\": \"A\",\n            \"prc\": \"20.00\",\n            \"sign\": \"false\",\n            \"turnover\": \"298.16\",\n            \"sum\": \"59.63\"\n        },\n        {\n            \"type\": \"0\",\n            \"name\": \"ПДВ\",\n            \"letter\": \"Б\",\n            \"prc\": \"7.00\",\n            \"sign\": \"false\",\n            \"turnover\": \"119.50\",\n            \"sum\": \"1.43\"\n        }\n    ],\n    \"body\": [\n        {\n            \"code\": \"98765\",\n            \"uktzed\": \"876543\",\n            \"name\": \"Куряче Стегно\",\n            \"unitcd\": \"25\",\n            \"unitnm\": \"кг\",\n            \"amount\": \"5.701\",\n            \"price\": \"52.30\",\n            \"letters\": \"A\",\n            \"cost\": \"298.16\"\n        },\n        {\n            \"code\": \"76543456\",\n            \"uktzed\": \"543210\",\n            \"name\": \"Пиво\",\n            \"unitcd\": \"87\",\n            \"unitnm\": \"бут\",\n            \"amount\": \"6\",\n            \"price\": \"16.50\",\n            \"letters\": \"Б\",\n            \"cost\": \"99.00\"\n        },\n        {\n            \"code\": \"76543123\",\n            \"uktzed\": \"876543\",\n            \"name\": \"Сироп від кашлю\",\n            \"unitcd\": \"87\",\n            \"unitnm\": \"бут\",\n            \"amount\": \"1\",\n            \"price\": \"20.50\",\n            \"letters\": \"Б\",\n            \"cost\": \"20.50\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/receipt/validate",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"receipt",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "return",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"",
+									"pm.collectionVariables.set(\"order_code\", response.orderCode);",
+									"pm.collectionVariables.set(\"number_fiscal\", response.numberFiscal);",
+									"pm.collectionVariables.set(\"number_local\", response.numberLocal);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"meta\": {\n        \"personTin\": \"627133\",\n        \"registrarFiscal\": \"4000054593\",\n        \"orderCode\": \"{{order_code}}\",\n        \"refundFiscal\": \"{{number_fiscal}}\"\n    },\n    \"total\": {\n        \"sum\": \"397.16\"\n    },\n    \"pay\": [\n        {\n            \"payformcd\": \"0\",\n            \"payformnm\": \"ГОТІВКА\",\n            \"sum\": \"397.16\",\n            \"provided\": \"397.16\"\n        }\n    ],\n    \"tax\": [\n        {\n            \"type\": \"0\",\n            \"name\": \"ПДВ\",\n            \"letter\": \"A\",\n            \"prc\": \"20.00\",\n            \"sign\": \"false\",\n            \"turnover\": \"397.16\",\n            \"sum\": \"79.42\"\n        }\n    ],\n    \"body\": [\n        {\n            \"code\": \"98765\",\n            \"uktzed\": \"876543\",\n            \"name\": \"Куряче Стегно\",\n            \"unitcd\": \"25\",\n            \"unitnm\": \"кг\",\n            \"amount\": \"5.701\",\n            \"price\": \"52.30\",\n            \"letters\": \"A\",\n            \"cost\": \"298.16\"\n        },\n        {\n            \"code\": \"76543456\",\n            \"uktzed\": \"543210\",\n            \"name\": \"Молоко 3.2%\",\n            \"unitcd\": \"87\",\n            \"unitnm\": \"бут\",\n            \"amount\": \"6\",\n            \"price\": \"16.50\",\n            \"letters\": \"A\",\n            \"cost\": \"99.00\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/receipt/refund",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"receipt",
+								"refund"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"meta\": {\n        \"cancelFiscal\": \"{{number_fiscal}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/receipt/cancel",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"receipt",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "transaction",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/receipt/transaction/fiscal/{{number_fiscal}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"receipt",
+								"transaction",
+								"fiscal",
+								"{{number_fiscal}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "commands",
+			"item": [
+				{
+					"name": "legal objects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/commands/legal/{{legal_id}}/objects/max/100",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"commands",
+								"legal",
+								"{{legal_id}}",
+								"objects",
+								"max",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "legal objects",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/commands/legal/{{legal_id}}/objects/max/1000",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"commands",
+								"legal",
+								"{{legal_id}}",
+								"objects",
+								"max",
+								"1000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registrar state",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/commands/registrar/{{registrar_id}}/state",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"commands",
+								"registrar",
+								"{{registrar_id}}",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registrar state",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/commands/registrar/{{registrar_id}}/state",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"commands",
+								"registrar",
+								"{{registrar_id}}",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registrar shifts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/commands/registrar/{{registrar_id}}/shifts?from=2020-12-24 21:37:56.000000&to=2020-12-25 20:20:20.000000",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"commands",
+								"registrar",
+								"{{registrar_id}}",
+								"shifts"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "2020-12-24 21:37:56.000000"
+								},
+								{
+									"key": "to",
+									"value": "2020-12-25 20:20:20.000000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registrar shifts documents",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/commands/registrar/{{registrar_id}}/shifts/{{shift_id}}/documents",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"commands",
+								"registrar",
+								"{{registrar_id}}",
+								"shifts",
+								"{{shift_id}}",
+								"documents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registrar shifts last totals",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/commands/registrar/{{registrar_id}}/shifts/last/totals",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"commands",
+								"registrar",
+								"{{registrar_id}}",
+								"shifts",
+								"last",
+								"totals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registrar close shift",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/commands/registrar/1/shifts/close",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"commands",
+								"registrar",
+								"1",
+								"shifts",
+								"close"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "protocol",
+			"value": "http"
+		},
+		{
+			"key": "host",
+			"value": "localhost"
+		},
+		{
+			"key": "number_local",
+			"value": "1"
+		},
+		{
+			"key": "number_fiscal",
+			"value": "1"
+		},
+		{
+			"key": "legal_id",
+			"value": "1"
+		},
+		{
+			"key": "unit_id",
+			"value": "1"
+		},
+		{
+			"key": "registrar_id",
+			"value": "1"
+		},
+		{
+			"key": "shift_id",
+			"value": "0"
+		},
+		{
+			"key": "order_code",
+			"value": "123-321-123"
+		}
+	]
+}
