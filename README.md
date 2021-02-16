@@ -15,5 +15,5 @@ A basic version of the server-side registrar of settlement operations
 ## Etc
 
 * [Specification](specification.tax.pdf)
-* [Environment](/mikhail-buryak/prso/tree/docker)
-* [Postman Collection](/mikhail-buryak/prso/blob/postman/PRSO.postman_collection.json)
+* [Environment](../tree/docker)
+* [Postman Collection](../blob/postman/PRSO.postman_collection.json)
